@@ -29,18 +29,18 @@ MAX_INVEST = 10_000        # hard cap on investment amount
 
 def fetch_historical_returns(ticker: str) -> np.ndarray:
 """Download 10 years of adjusted-close prices and return daily log returns."""
-end = datetime.now()
-start = end - timedelta(days=HISTORY_YEARS * 365)
-
-df = yf.download(ticker, start=start, end=end, progress=False, auto_adjust=True)
-
-if df.empty or len(df) < 252:
-raise ValueError(f"Not enough historical data for {ticker}")
-
-# Daily log returns
-closes = df["Close"].values.flatten()
-log_returns = np.diff(np.log(closes))
-return log_returns
+ end = datetime.now()
+ start = end - timedelta(days=HISTORY_YEARS * 365)
+ 
+ df = yf.download(ticker, start=start, end=end, progress=False, auto_adjust=True)
+ 
+ if df.empty or len(df) < 252:
+ raise ValueError(f"Not enough historical data for {ticker}")
+ 
+ # Daily log returns
+ closes = df["Close"].values.flatten()
+ log_returns = np.diff(np.log(closes))
+ return log_returns
 
 
 def run_monte_carlo(log_returns: np.ndarray, invest_amount: float) -> dict:

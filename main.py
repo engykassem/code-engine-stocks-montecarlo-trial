@@ -35,7 +35,7 @@ def fetch_historical_returns(ticker: str) -> np.ndarray:
  df = yf.download(ticker, start=start, end=end, progress=False, auto_adjust=True)
  
  if df.empty or len(df) < 252:
- raise ValueError(f"Not enough historical data for {ticker}")
+  raise ValueError(f"Not enough historical data for {ticker}")
  
  # Daily log returns
  closes = df["Close"].values.flatten()

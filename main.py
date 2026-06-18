@@ -29,8 +29,8 @@ MAX_INVEST = 10_000        # hard cap on investment amount
 
 def fetch_historical_returns(ticker: str) -> np.ndarray:
     """Download 10 years of adjusted-close prices and return daily log returns."""
-    end = datetime.now()                                          # ← was 1 space, needs 4
-    start = end - timedelta(days=HISTORY_YEARS * 365)            # ← same
+    end = datetime.now()
+    start = end - timedelta(days=HISTORY_YEARS * 365)
 
     df = yf.download(ticker, start=start, end=end, progress=False, auto_adjust=True)
 
@@ -42,13 +42,12 @@ def fetch_historical_returns(ticker: str) -> np.ndarray:
     return log_returns
 
 
-
 def run_monte_carlo(log_returns: np.ndarray, invest_amount: float) -> dict:
     """
     Run Monte Carlo simulation using Geometric Brownian Motion (GBM).
     ...
     """
-    mu = np.mean(log_returns)          # ← needs 4 spaces
+    mu = np.mean(log_returns)
     sigma = np.std(log_returns)
     drift = mu - 0.5 * sigma ** 2
 
@@ -72,13 +71,12 @@ def run_monte_carlo(log_returns: np.ndarray, invest_amount: float) -> dict:
     prob_loss = float(np.mean(final_values < invest_amount) * 100)
 
     return {
-        "mean_final":  float(np.mean(final_values)),
-        "prob_profit": float(100 - prob_loss),
+        "mean_final":   float(np.mean(final_values)),
+        "prob_profit":  float(100 - prob_loss),
         "worst_likely": float(worst_likely),
-        "prob_worst":  prob_worst,
-        "prob_loss":   prob_loss,
+        "prob_worst":   prob_worst,
+        "prob_loss":    prob_loss,
     }
-
 
 
 def format_sms(ticker: str, amount: float, results: dict) -> str:
@@ -100,26 +98,34 @@ def format_sms(ticker: str, amount: float, results: dict) -> str:
     else:
         buy_line = f"Buy or not: No - only {prob:.0f}% of simulations made money. This stock historically moves like a rollercoaster built by an intern."
 
-  
     return (
-        ticker + " - Monte Carlo Results" + nl +
-        "----" + nl +
-        f"Expected value: ${mean_val:,.0f} ({gain_pct:+.1f}%)" + nl +
-        f"Prob of profit: {prob:.1f}%" + nl +
-        "----" + nl +
-        f"Worst case scenario: ${worst_val:,.0f} ({worst_pct:+.1f}%)" + nl +
-        f"Prob of worst: {results['prob_worst']:.1f}%" + nl +
-        "----" + nl +
-        buy_line + nl +
-        nl +
-        f"Invested: ${amount:,.0f} | Sims: {NUM_SIMULATIONS:,}" + nl +
-        nl +
-        "Disclaimer: This simulation cannot be held accountable for "
-        "any losses from its suggestions, but any profits "
-        "must be shared 50/50."
+        f"{ticker} - Monte Carlo Results
+"
+        f"----
+"
+        f"Expected value: ${mean_val:,.0f} ({gain_pct:+.1f}%)
+"
+        f"Prob of profit: {prob:.1f}%
+"
+        f"----
+"
+        f"Worst case scenario: ${worst_val:,.0f} ({worst_pct:+.1f}%)
+"
+        f"Prob of worst: {results['prob_worst']:.1f}%
+"
+        f"----
+"
+        f"{buy_line}\n"
+        f"
+"
+        f"Invested: ${amount:,.0f} | Sims: {NUM_SIMULATIONS:,}
+"
+        f"
+"
+        f"Disclaimer: This simulation cannot be held accountable for "
+        f"any losses from its suggestions, but any profits "
+        f"must be shared 50/50."
     )
-
-
 
 
 def main():

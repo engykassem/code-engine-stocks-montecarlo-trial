@@ -100,8 +100,7 @@ def format_sms(ticker: str, amount: float, results: dict) -> str:
     else:
         buy_line = f"Buy or not: No - only {prob:.0f}% of simulations made money. This stock historically moves like a rollercoaster built by an intern."
 
-    nl = "
-"
+  
     return (
         ticker + " - Monte Carlo Results" + nl +
         "----" + nl +

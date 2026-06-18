@@ -16,7 +16,7 @@ Environment variables:
 import os
 import numpy as np
 import yfinance as yf
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 from twilio.rest import Client
 
 
@@ -45,7 +45,6 @@ def fetch_historical_returns(ticker: str) -> np.ndarray:
 def run_monte_carlo(log_returns: np.ndarray, invest_amount: float) -> dict:
     """
     Run Monte Carlo simulation using Geometric Brownian Motion (GBM).
-    ...
     """
     mu = np.mean(log_returns)
     sigma = np.std(log_returns)
@@ -71,11 +70,11 @@ def run_monte_carlo(log_returns: np.ndarray, invest_amount: float) -> dict:
     prob_loss = float(np.mean(final_values < invest_amount) * 100)
 
     return {
-        "mean_final":   float(np.mean(final_values)),
-        "prob_profit":  float(100 - prob_loss),
+        "mean_final": float(np.mean(final_values)),
+        "prob_profit": float(100 - prob_loss),
         "worst_likely": float(worst_likely),
-        "prob_worst":   prob_worst,
-        "prob_loss":    prob_loss,
+        "prob_worst": prob_worst,
+        "prob_loss": prob_loss,
     }
 
 
@@ -98,8 +97,8 @@ def format_sms(ticker: str, amount: float, results: dict) -> str:
     else:
         buy_line = f"Buy or not: No - only {prob:.0f}% of simulations made money. This stock historically moves like a rollercoaster built by an intern."
 
-    nl = "
-"
+    nl = "\n"
+
     return (
         ticker + " - Monte Carlo Results" + nl +
         "----" + nl +
@@ -131,22 +130,25 @@ def main():
         print("Warning: capped to 7 stocks max")
 
     if job_index >= len(tickers):
-        print(f"Worker {job_index} has no stock assigned (only {len(tickers)} tickers). Exiting.")
+        print(f"Worker {job_index} has no stock assigned "
+              f"(only {len(tickers)} tickers). Exiting.")
         return
 
     ticker = tickers[job_index]
     invest_amount = min(float(os.environ.get("INVEST_AMOUNT", "1000")), MAX_INVEST)
 
     # ── Twilio setup ─────────────────────────────────────────────────
-    account_sid  = "AC79b7a71528d09a249f521d2de052d309"
-    auth_token   = os.environ["TWILIO_TOKEN"]
-    from_number  = "+19843638872"
-    to_number    = os.environ["PHONE_NUMBER"]
+    account_sid = "AC79b7a71528d09a249f521d2de052d309"
+    auth_token = os.environ["TWILIO_TOKEN"]
+    from_number = "+19843638872"
+    to_number = os.environ["PHONE_NUMBER"]
     twilio_client = Client(account_sid, auth_token)
 
     # ── Run simulation ───────────────────────────────────────────────
-    print(f"Worker {job_index}: running Monte Carlo for {ticker} "
-          f"(${invest_amount:,.0f}, {NUM_SIMULATIONS:,} sims)...")
+    print(
+        f"Worker {job_index}: running Monte Carlo for {ticker} "
+        f"(${invest_amount:,.0f}, {NUM_SIMULATIONS:,} sims)..."
+    )
 
     log_returns = fetch_historical_returns(ticker)
     results = run_monte_carlo(log_returns, invest_amount)

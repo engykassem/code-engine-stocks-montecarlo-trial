@@ -150,7 +150,7 @@ ticker = tickers[job_index]
 invest_amount = min(float(os.environ.get("INVEST_AMOUNT", "1000")), MAX_INVEST)
 
 # ── Twilio setup ─────────────────────────────────────────────────
-account_sid  = "AC79b7a71528d09a249f521d2de052d309"
+account_sid  = "AC79b7a71528d09a249f521d2de052d30"
 auth_token   = os.environ["TWILIO_TOKEN"]
 from_number  = "+19843638872"
 to_number    = os.environ["PHONE_NUMBER"]

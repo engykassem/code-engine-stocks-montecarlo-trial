@@ -20,5 +20,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/emaadparacha/code-engine-stocks-monte-carlo:latest
-            ghcr.io/emaadparacha/code-engine-stocks-monte-carlo:${{ github.sha }}
+            ghcr.io/engykassem/code-engine-stocks-montecarlo-trial:latest
+            ghcr.io/engykassem/code-engine-stocks-montecarlo-trial:${{ github.sha }}

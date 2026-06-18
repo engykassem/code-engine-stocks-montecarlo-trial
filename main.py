@@ -101,26 +101,16 @@ def format_sms(ticker: str, amount: float, results: dict) -> str:
         buy_line = f"Buy or not: No - only {prob:.0f}% of simulations made money..."
 
     return (
-        f"{ticker} - Monte Carlo Results
-"
-        f"----
-"
-        f"Expected value: ${mean_val:,.0f} ({gain_pct:+.1f}%)
-"
-        f"Prob of profit: {prob:.1f}%
-"
-        f"----
-"
-        f"Worst case scenario: ${worst_val:,.0f} ({worst_pct:+.1f}%)
-"
-        f"Prob of worst: {results['prob_worst']:.1f}%
-"
-        f"----
-"
-        f"{buy_line}
-"
-        f"
-"
+        f"{ticker} - Monte Carlo Results"
+        f"----"
+        f"Expected value: ${mean_val:,.0f} ({gain_pct:+.1f}%)"
+        f"Prob of profit: {prob:.1f}%"
+        f"----"
+        f"Worst case scenario: ${worst_val:,.0f} ({worst_pct:+.1f}%)"
+        f"Prob of worst: {results['prob_worst']:.1f}%"
+        f"----"
+        f"{buy_line}"
+        f""
         f"Invested: ${amount:,.0f} | Sims: {NUM_SIMULATIONS:,}\n"
         f"\n"
         f"Disclaimer: This simulation cannot be held accountable for "

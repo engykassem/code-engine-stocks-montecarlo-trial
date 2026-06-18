@@ -91,7 +91,7 @@ def format_sms(ticker: str, amount: float, results: dict) -> str:
 
     prob = results["prob_profit"]
 
-       if prob >= 75:
+    if prob >= 75:
         buy_line = f"Buy or not: Yes - {prob:.0f}% of simulations were profitable with an avg return of {gain_pct:+.1f}%. The odds are strongly in your favour."
     elif prob >= 50:
         buy_line = f"Buy or not: Yes - more likely to profit ({prob:.0f}%) than not, but {100 - prob:.0f}% of simulations lost money. Don't bet the house."
@@ -100,8 +100,7 @@ def format_sms(ticker: str, amount: float, results: dict) -> str:
     else:
         buy_line = f"Buy or not: No - only {prob:.0f}% of simulations made money. This stock historically moves like a rollercoaster built by an intern."
 
-
-       nl = "
+    nl = "
 "
     return (
         ticker + " - Monte Carlo Results" + nl +
@@ -120,6 +119,7 @@ def format_sms(ticker: str, amount: float, results: dict) -> str:
         "any losses from its suggestions, but any profits "
         "must be shared 50/50."
     )
+
 
 
 

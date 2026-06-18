@@ -91,32 +91,36 @@ def format_sms(ticker: str, amount: float, results: dict) -> str:
 
     prob = results["prob_profit"]
 
-    if prob >= 75:
-        buy_line = f"Buy or not: Yes - {prob:.0f}% of simulations were profitable..."
+       if prob >= 75:
+        buy_line = f"Buy or not: Yes - {prob:.0f}% of simulations were profitable with an avg return of {gain_pct:+.1f}%. The odds are strongly in your favour."
     elif prob >= 50:
-        buy_line = f"Buy or not: Yes - more likely to profit ({prob:.0f}%)..."
+        buy_line = f"Buy or not: Yes - more likely to profit ({prob:.0f}%) than not, but {100 - prob:.0f}% of simulations lost money. Don't bet the house."
     elif prob >= 35:
-        buy_line = f"Buy or not: No - only {prob:.0f}% of simulations were profitable..."
+        buy_line = f"Buy or not: No - only {prob:.0f}% of simulations were profitable. You're basically flipping a weighted coin against yourself."
     else:
-        buy_line = f"Buy or not: No - only {prob:.0f}% of simulations made money..."
+        buy_line = f"Buy or not: No - only {prob:.0f}% of simulations made money. This stock historically moves like a rollercoaster built by an intern."
 
+
+       nl = "
+"
     return (
-        f"{ticker} - Monte Carlo Results"
-        f"----"
-        f"Expected value: ${mean_val:,.0f} ({gain_pct:+.1f}%)"
-        f"Prob of profit: {prob:.1f}%"
-        f"----"
-        f"Worst case scenario: ${worst_val:,.0f} ({worst_pct:+.1f}%)"
-        f"Prob of worst: {results['prob_worst']:.1f}%"
-        f"----"
-        f"{buy_line}"
-        f""
-        f"Invested: ${amount:,.0f} | Sims: {NUM_SIMULATIONS:,}\n"
-        f"\n"
-        f"Disclaimer: This simulation cannot be held accountable for "
-        f"any losses from its suggestions, but any profits "
-        f"must be shared 50/50."
+        ticker + " - Monte Carlo Results" + nl +
+        "----" + nl +
+        f"Expected value: ${mean_val:,.0f} ({gain_pct:+.1f}%)" + nl +
+        f"Prob of profit: {prob:.1f}%" + nl +
+        "----" + nl +
+        f"Worst case scenario: ${worst_val:,.0f} ({worst_pct:+.1f}%)" + nl +
+        f"Prob of worst: {results['prob_worst']:.1f}%" + nl +
+        "----" + nl +
+        buy_line + nl +
+        nl +
+        f"Invested: ${amount:,.0f} | Sims: {NUM_SIMULATIONS:,}" + nl +
+        nl +
+        "Disclaimer: This simulation cannot be held accountable for "
+        "any losses from its suggestions, but any profits "
+        "must be shared 50/50."
     )
+
 
 
 def main():
